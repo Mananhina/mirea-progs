@@ -18,8 +18,3 @@ function draw_cross(robot::Robot)
     end
     putmarker!(robot)
 end
-
-function sum_up(x)
-    x += 1
-    return x
-end
