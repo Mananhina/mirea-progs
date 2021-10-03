@@ -1,4 +1,5 @@
-function movements!(r, side::HorizonSide) # Дойти до упора
+function movements!(r:: Robot, side::HorizonSide)
+    """Move robot to reach the end."""
     c = 0
     while !isborder(r, side)
         move!(r, side)
@@ -7,14 +8,18 @@ function movements!(r, side::HorizonSide) # Дойти до упора
     return c
 end
 
-function movements!(r, side::HorizonSide, num::Integer) # Пройти num шагов в направлении side
+
+function movements!(r::Robot, side::HorizonSide, num::Integer)
+    """Move robot num steps in side direction."""
     while num > 0
         move!(r, side)
         num -= 1
     end
 end
 
-function to_corner(r, side1::HorizonSide, side2::HorizonSide) # дойти до угла двух направлений
+
+function to_corner(r:: Robot, side1::HorizonSide, side2::HorizonSide)
+    """Move robot to the corner of side1 & side2"""
     s1s2 = [0, 0]
     while !isborder(r, side1) || !isborder(r, side2)
         s1s2[1] += movements!(r, side1)
@@ -23,7 +28,6 @@ function to_corner(r, side1::HorizonSide, side2::HorizonSide) # дойти до 
     return s1s2
 end
 
-# main
 
 sw, no = to_corner(r, Sud, West), [0, 0]
 
