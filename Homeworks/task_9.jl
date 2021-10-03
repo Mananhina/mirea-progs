@@ -1,4 +1,7 @@
 function find_marker(robot::Robot)
+    """
+    Find marker in the field
+    """
     sides = [Nord, Ost, Sud, West] 
     c = 0
     while !ismarker(robot)
