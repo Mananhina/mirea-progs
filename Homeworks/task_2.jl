@@ -1,3 +1,5 @@
+using HorizonSideRobots
+r = Robot()
 function paint_perimeter(robot::Robot)
     c = 0
     while !isborder(robot, West)
