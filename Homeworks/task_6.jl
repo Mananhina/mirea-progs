@@ -1,73 +1,40 @@
 using HorizonSideRobots
+include("BackPath.jl")
 
-function steps_to_border(r::Robot, side::HorizonSide)
-    n = 0
-    while !isborder(r, side)
-        move!(r, side)
-        n += 1
-    end
-    return n
-end
-
-function paint_border(r::Robot, view::HorizonSide, direction::HorizonSide)
-    move!(r, direction)
-    while isborder(r, view)
+function paint_border(r::Robot, side1::HorizonSide, side2::HorizonSide)
+    while isborder(r, side1)
         putmarker!(r)
-        move!(r, direction)
+        move!(r, side2)
     end
-
-function move_n_steps!(r::Robot, side::HorizonSide, n::Int)
-    while n > 0
-        move!(r, side)
-        n -= 1
-    end
+    move!(r, side1)
 end
 
 function paint_perimeter(r::Robot)
-    order = []
-    s1, s2 = 0, 0
-    while !isborder(r, Ost) || !isborder(r, Sud)
-        s1 = steps_to_border(r, Ost)
-        push!(order, s1)
-        s1 = 0
-        s2 = steps_to_border(r, Sud)
-        push!(order, s2)
-        s2 = 0
-    end
+    back_path = BackPath(r, (Nord, Ost))
+    higth = movements!(r, Sud)
 
-    higth = steps_to_border(r, Nord)
+    num_side = 0
+    cur = 0
 
-    num_side = 2
-    c = 0
-    while c < higth + 1
+    while cur != higth + 1
         while !isborder(r, HorizonSide(num_side))
             move!(r, HorizonSide(num_side))
-            c += 1
+            cur += 1
         end
-        if c != higth
-            c = hight + 1
+        if cur != higth
+            cur = higth + 1
+        else
+            move!(r, West)
+            num_side = (num_side + 2) % 4
         end
-        move!(r, West)
-        num_side = num_side + 2 % 4
-    end
-    move!(r, Ost)
-    n1 = (HorizonSide(num_side), West)
-    n2 = (Ost, HorizonSide(num_side))
-    n3 = (HorizonSide(num_side + 2 % 4), Ost)
-    n4 = (West, HorizonSide(num_side + 2 % 4))
-    side_tupels = [n1, n2, n3, n4]
-    for i in side_tupels
-        paint_border(r, i[1], i[2])
     end
 
-    while !isborder(r, Ost)
-        move!(r, Ost)
-    end
-    while !isborder(r, Sud)
-        move!(r, Sud)
+    cur_side = num_side
+    for i in 0:3
+        paint_border(r, HorizonSide(cur_side % 4), HorizonSide((cur_side + 3) % 4))
+        cur_side = (cur_side + 1) % 4
     end
 
-    for i in 1:length(order)
-        move_n_steps!(r, HorizonSide((length(order) - i) % 2), order[length(order) - i])
-    end
+    to_nord_ost_corner = BackPath(r, (Nord, Ost))
+    back!(r, back_path)
 end

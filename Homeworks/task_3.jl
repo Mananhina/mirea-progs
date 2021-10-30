@@ -1,10 +1,9 @@
 using HorizonSideRobots
-robot = Robot()
 
 function put_markers_to_border!(r::Robot, side::HorizonSide)
-    while !isborder(robot, side)
-        move!(robot, side)
-        putmarker!(robot)
+    while !isborder(r, side)
+        move!(r, side)
+        putmarker!(r)
     end
 end
 

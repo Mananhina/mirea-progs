@@ -1,5 +1,4 @@
 using HorizonSideRobots
-robot = Robot()
 
 function movements!(r::Robot, side::HorizonSide)
     while !isborder(r, side)

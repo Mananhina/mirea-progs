@@ -1,5 +1,4 @@
 using HorizonSideRobots
-robot = Robot()
 
 function reverse_side(side::HorizonSide)
     return HorizonSide((Int(side) + 2) % 4)

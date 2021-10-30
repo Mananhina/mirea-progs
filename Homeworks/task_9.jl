@@ -1,26 +1,20 @@
-function find_marker(robot::Robot)
-    """Find marker in the field."""
-    sides = [Nord, Ost, Sud, West] 
-    c = 0
-    while !ismarker(robot)
-        move!(robot, West)
-    end
+using HorizonSideRobots
 
-    sides = [Nord, Ost, Sud, West]
-    for side in sides
-        while !isborder(robot, side)
-            putmarker!(robot)
-            move!(robot, side)
-        end
+function movements!(r::Robot, side::HorizonSide, n::Int)
+    while (n > 0 && !ismarker(r))
+        move!(r, side)
+        n -= 1
     end
+end
 
-    while !ismarker(robot)
-        putmarker!(robot)
-        move!(robot, Nord)
-    end
-
-    while c > 0
-        move!(robot, Ost)
-        c -= 1
+function find_marker(r::Robot)
+    i = 3
+    keep_const = 0
+    counter = 0
+    while !ismarker(r)
+        movements!(r, HorizonSide(i % 4), counter + keep_const)
+        i += 1
+        keep_const = 1 - 1 * keep_const
+        counter += keep_const
     end
 end
