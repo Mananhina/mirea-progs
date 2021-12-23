@@ -136,7 +136,7 @@ function snake(robot::AbstractBorderRobot)
     side = Ost
     movements!(robot,side)
     while !isborder(robot, Nord)
-        move!(robot,Nord)
+        try_move!(robot,Nord)
         # putmarker!(robot )
         side = reverse_side(side)
         movements!(robot,side)
@@ -208,7 +208,7 @@ abstract type BoundlessRobot <: AbstractRobot end
 try_move!(robot::BoundlessRobot,side::HorizonSide) = try_move!(get(robot), side)
 
 function moves!(r::BoundlessRobot, side::HorizonSide, n::Int)
-    while (n > 0 && isborder(r, left(left(left(side)))))
+    while (n > 0 && isborder(r, reverse_side(left(side))))
         move!(r, side)
         n -= 1
     end
@@ -224,6 +224,9 @@ function move_through_hole!(r::BoundlessRobot, side::HorizonSide)
         bypass_side = reverse_side(bypass_side)
     end
     move!(r, side)
+    while isborder(r, bypass_side)
+        move!(r, side)
+    end
     if cur_step != 1
         for i in 0:div((cur_step + 1), 2)
             move!(r, bypass_side)
@@ -241,6 +244,12 @@ function movements!(r::MarkerBoundlessRobot, side::HorizonSide, n::Int)
     while (n > 0 && !ismarker(r))
         move_through_hole!(r, side)
         n -= 1
+    end
+end
+
+function move!(r::MarkerBoundlessRobot, side::HorizonSide)
+    if !ismarker(r)
+        move!(get(r), side)
     end
 end
 
