@@ -7,7 +7,7 @@ mutable struct Coord
     Coord(x::Int,y::Int) = new(x,y)
 end
 
-function move_coords!(coord::Coord, side::HorizonSide)
+function move!(coord::Coord, side::HorizonSide)
     if side==Nord
         coord.y += 1
     elseif side==Sud
