@@ -1,18 +1,14 @@
 using HorizonSideRobots
-include("Try_to_move.jl")
+include("Functions.jl")
+include("Structs.jl")
 
 function cross_border(robot::Robot)
+    cross_robot = PutmarkersRobot(robot)
     sides = [Nord, West, Sud, Ost]
     for side in sides
-        while try_move!(robot, side)
-            putmarker!(robot)
-        end
-
-        rside = inverse(side)
-
-        while ismarker(robot)
-            try_move!(robot, rside)
-        end
+        m = movements!(cross_robot, side)
+        rside = reverse_side(side)
+        movements!(cross_robot, rside, m)
     end
     putmarker!(robot)
 end

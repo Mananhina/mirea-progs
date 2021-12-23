@@ -1,27 +1,5 @@
 using HorizonSideRobots
-
-function put_markers_to_border!(r::Robot, side::HorizonSide)
-    while !isborder(r, side)
-        move!(r, side)
-        putmarker!(r)
-    end
-end
-
-function move_with_path!(r::Robot, side::HorizonSide)
-    c = 0
-    while !isborder(r, side)
-        move!(r, side)
-        c += 1
-    end
-    return c
-end
-
-function move_n_steps!(r::Robot, side::HorizonSide, n::Int)
-    while n > 0
-        move!(r, side)
-        n -= 1
-    end
-end
+include("Functions.jl")
 
 function paint_inside(robot::Robot)
     w = move_with_path!(robot, West)
@@ -40,6 +18,6 @@ function paint_inside(robot::Robot)
 
     _ = move_with_path!(robot, West)
     __ = move_with_path!(robot, Nord)
-    move_n_steps!(robot, Ost, w)
-    move_n_steps!(robot, Sud, n)
+    movements!(robot, Ost, w)
+    movements!(robot, Sud, n)
 end

@@ -2,10 +2,11 @@ using HorizonSideRobots
 include("BackPath.jl")
 include("Coord.jl")
 
+import HorizonSideRobots: move!
+
 function print_chess(r::Robot, n::Int)
     back_path = BackPath(r)
     coord = Coord(0, 0)
-    parity = sum(back_path.path) % 2
     side = Ost
     nord_border = false
     side_border = false
@@ -15,14 +16,14 @@ function print_chess(r::Robot, n::Int)
                 putmarker!(r)
             end
             if !isborder(r, side)
-                move_coords!(coord, side)
+                move!(coord, side)
                 move!(r, side)
             else
                 side_border = true
             end
         end
         if !isborder(r, Nord)
-            move_coords!(coord, Nord)
+            move!(coord, Nord)
             move!(r, Nord)
             side = inverse(side)
             side_border = false

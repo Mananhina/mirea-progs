@@ -1,22 +1,13 @@
 using HorizonSideRobots
 include("BackPath.jl")
-include("Try_to_move.jl")
+include("Structs.jl")
 
-function paint_all(r::Robot)
+function mark_field(r::Robot)
     back_path = BackPath(r)
-    putmarker!(r)
-    side = Ost
-    while !isborder(r, Nord)
-        while try_move!(r, side)
-            putmarker!(r)
-        end
-        side = HorizonSide((Int(side) + 2) % 4)
-        move!(r, Nord)
-        putmarker!(r)
-    end
-    while try_move!(r, side)
-        putmarker!(r)
-    end
-    to_sud_west_corner = BackPath(r)
-    back!(r, back_path)        
+    putmarkers_robot=PutmarkersRobot(r)
+    putmarker!(putmarkers_robot)
+    snake(putmarkers_robot)
+    movements!(r,West)
+    movements!(r,Sud)
+    back!(r, back_path)
 end

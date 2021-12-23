@@ -1,14 +1,13 @@
 using HorizonSideRobots
 include("BackPath.jl")
+include("Structs.jl")
 
-function paint_perimeter(r::Robot)
-    back_path = BackPath(r)
+function paint_perimeter(robot::Robot)
+    back_path = BackPath(robot)
+    r = PutmarkersRobot(robot)
     sides = [Nord, Ost, Sud, West]
     for side in sides
-        while !isborder(r, side)
-            move!(r, side)
-            putmarker!(r)
-        end
+        movements!(r, side)
     end
-    back!(r, back_path)
+    back!(robot, back_path)
 end

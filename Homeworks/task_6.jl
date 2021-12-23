@@ -1,5 +1,6 @@
 using HorizonSideRobots
 include("BackPath.jl")
+include("Functions.jl")
 
 function paint_border(r::Robot, side1::HorizonSide, side2::HorizonSide)
     while isborder(r, side1)
@@ -11,7 +12,7 @@ end
 
 function paint_perimeter(r::Robot)
     back_path = BackPath(r, (Nord, Ost))
-    higth = movements!(r, Sud)
+    higth = steps_to_border!(r, Sud)
 
     num_side = 0
     cur = 0

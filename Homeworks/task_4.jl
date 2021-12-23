@@ -1,35 +1,5 @@
 using HorizonSideRobots
-
-function movements!(r::Robot, side::HorizonSide)
-    while !isborder(r, side)
-        move!(r, side)
-    end
-end
-
-function move_with_path!(r::Robot, side::HorizonSide)
-    c = 0
-    while !isborder(r, side)
-        move!(r, side)
-        c += 1
-    end
-    return c
-end
-
-function move_n_steps!(r::Robot, side::HorizonSide, n::Int)
-    while n > 0
-        move!(r, side)
-        n -= 1
-    end
-end
-
-function move_n_steps_putmarkers!(r::Robot, side::HorizonSide, n::Int)
-    putmarker!(r)
-    while n > 0
-        move!(r, side)
-        putmarker!(r)
-        n -= 1
-    end
-end
+include("Functions.jl")
 
 function paint_stairs!(r::Robot)
     o = move_with_path!(r, Ost)
@@ -57,6 +27,6 @@ function paint_stairs!(r::Robot)
 
     movements!(r, West)
     movements!(r, Sud)
-    move_n_steps!(r, Ost, len - o)
-    move_n_steps!(r, Nord, s)
+    movements!(r, Ost, len - o)
+    movements!(r, Nord, s)
 end

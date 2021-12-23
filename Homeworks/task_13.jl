@@ -1,8 +1,5 @@
 using HorizonSideRobots
-
-function reverse_side(side::HorizonSide)
-    return HorizonSide((Int(side) + 2) % 4)
-end
+include("Functions.jl")
 
 function draw_skew_cross(robot::Robot)
     sides_tuple = [(Nord, Ost), (Nord, West), (Sud, West), (Sud, Ost)]
