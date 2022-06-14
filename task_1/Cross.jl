@@ -1,6 +1,10 @@
+using HorizonSideRobots
+
+
 function reverse_side(side::HorizonSide)
     return HorizonSide((Int(side) + 2) % 4)
 end
+
 
 function draw_cross(robot::Robot)
     sides = [Nord, Sud, West, Ost]
